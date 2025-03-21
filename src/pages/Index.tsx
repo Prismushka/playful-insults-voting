@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
-import InsultCard from '../components/InsultCard';
+import CascadingInsults from '../components/CascadingInsults';
 import CreateInsultForm from '../components/CreateInsultForm';
 import { useInsultStore } from '../utils/data';
 import { ChevronDown, TrendingUp, Plus, RefreshCw } from 'lucide-react';
@@ -71,19 +71,9 @@ const Index = () => {
                 </button>
               </div>
               
-              {insults.length === 0 ? (
-                <div className="text-center py-12">
-                  <p className="text-muted-foreground">Пока нет ругательств. Создайте первое!</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {insults.map((insult) => (
-                    <InsultCard key={insult.id} insult={insult} />
-                  ))}
-                </div>
-              )}
+              <CascadingInsults insults={insults} />
               
-              {insults.length > 6 && (
+              {insults.length > 10 && (
                 <div className="text-center mt-8">
                   <button className="flex items-center mx-auto px-4 py-2 text-muted-foreground hover:text-foreground transition-colors text-sm">
                     <span>Загрузить еще</span>

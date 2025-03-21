@@ -3,12 +3,14 @@ import React, { useState } from 'react';
 import { Insult, useInsultStore } from '../utils/data';
 import VoteButton from './VoteButton';
 import { PaymentModal } from './PaymentModal';
+import { cn } from '../lib/utils';
 
 interface InsultCardProps {
   insult: Insult;
+  featured?: boolean;
 }
 
-const InsultCard: React.FC<InsultCardProps> = ({ insult }) => {
+const InsultCard: React.FC<InsultCardProps> = ({ insult, featured = false }) => {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const addVote = useInsultStore((state) => state.addVote);
 
@@ -30,28 +32,47 @@ const InsultCard: React.FC<InsultCardProps> = ({ insult }) => {
   };
 
   return (
-    <div className="w-full animate-scale-in">
-      <div className="glassmorphism p-6 rounded-2xl hover:shadow-md transition-all duration-300 h-full">
+    <div className={cn(
+      "w-full animate-scale-in",
+      featured && "transform transition-all duration-300 hover:scale-[1.02]"
+    )}>
+      <div className={cn(
+        "glassmorphism p-6 rounded-2xl hover:shadow-md transition-all duration-300 h-full",
+        featured && "border-primary/30 bg-white/70 shadow-lg"
+      )}>
         <div className="mb-4 flex justify-between items-start">
           <div className="flex items-center">
-            <span className="text-xs font-medium px-2 py-1 bg-secondary rounded-full">#{insult.id}</span>
+            <span className={cn(
+              "text-xs font-medium px-2 py-1 rounded-full",
+              featured ? "bg-primary/10 text-primary" : "bg-secondary"
+            )}>
+              #{insult.id}
+            </span>
           </div>
           <div className="text-xs text-muted-foreground">
             {formatDate(insult.createdAt)}
           </div>
         </div>
 
-        <p className="text-lg font-medium mb-4 text-foreground">{insult.text}</p>
+        <p className={cn(
+          "mb-4 text-foreground",
+          featured ? "text-xl font-medium" : "text-lg font-medium"
+        )}>
+          {insult.text}
+        </p>
         
         <div className="flex justify-between items-center mt-4">
           <div className="text-sm text-muted-foreground">
             Автор: {insult.author}
           </div>
           <div className="flex items-center">
-            <div className="mr-2 text-sm font-medium">
+            <div className={cn(
+              "mr-2 font-medium",
+              featured ? "text-base" : "text-sm"
+            )}>
               {insult.votes} голос{insult.votes === 1 ? '' : insult.votes >= 2 && insult.votes <= 4 ? 'а' : 'ов'}
             </div>
-            <VoteButton onClick={handleVoteClick} />
+            <VoteButton onClick={handleVoteClick} featured={featured} />
           </div>
         </div>
       </div>
