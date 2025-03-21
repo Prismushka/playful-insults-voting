@@ -9,8 +9,6 @@ import NotFound from "./pages/NotFound";
 
 // For managing local zustand store
 import { create } from 'zustand';
-<lov-add-dependency>zustand@4.4.1</lov-add-dependency>
-<lov-add-dependency>@types/node@20.11.25</lov-add-dependency>
 
 const queryClient = new QueryClient();
 
