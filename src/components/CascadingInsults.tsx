@@ -69,7 +69,7 @@ const CascadingInsults: React.FC<CascadingInsultsProps> = ({ insults }) => {
             </div>
           )}
 
-          {/* Third place - right */}
+          {/* Third place - right - made the same height as second place */}
           {topThreeInsults.length >= 3 && (
             <div className="absolute bottom-0 right-0 lg:right-[calc(50%-260px)] w-full max-w-[250px] z-10 transform transition-all duration-300 hover:scale-[1.03]">
               <div className="relative">
@@ -80,7 +80,7 @@ const CascadingInsults: React.FC<CascadingInsultsProps> = ({ insults }) => {
                   <Medal className="w-4 h-4 mr-1" />
                   <span className="text-sm font-medium">3 место</span>
                 </div>
-                <div className="h-[50px] w-full bg-gradient-to-t from-orange-400 to-orange-200 rounded-t-lg shadow-inner"></div>
+                <div className="h-[70px] w-full bg-gradient-to-t from-orange-400 to-orange-200 rounded-t-lg shadow-inner"></div>
                 <InsultCard insult={topThreeInsults[2]} featured={false} />
               </div>
             </div>
