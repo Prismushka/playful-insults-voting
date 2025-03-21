@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { DollarSign, Check, ArrowRight, Loader2 } from 'lucide-react';
+import { DollarSign, Check, ArrowRight, Loader2, Wallet } from 'lucide-react';
 import { Insult } from '../utils/data';
 import { toast } from 'sonner';
 
@@ -20,6 +20,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
 }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [walletAddress] = useState('0x1a2b3c4d5e6f7g8h9i0j');
+  const [paymentNetwork, setPaymentNetwork] = useState('trc20');
 
   const handlePayment = () => {
     setIsProcessing(true);
@@ -59,6 +60,24 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
             
             <div className="flex justify-between items-center p-3 border border-border rounded-lg">
               <div className="flex items-center">
+                <Wallet className="w-5 h-5 text-primary mr-2" />
+                <span className="font-medium">Сеть</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <select 
+                  value={paymentNetwork}
+                  onChange={(e) => setPaymentNetwork(e.target.value)}
+                  className="p-1.5 text-sm rounded border border-input bg-background"
+                >
+                  <option value="trc20">TRC20</option>
+                  <option value="erc20">ERC20</option>
+                  <option value="bep20">BEP20</option>
+                </select>
+              </div>
+            </div>
+            
+            <div className="flex justify-between items-center p-3 border border-border rounded-lg">
+              <div className="flex items-center">
                 <Check className="w-5 h-5 text-green-500 mr-2" />
                 <span className="font-medium">Кошелек получателя</span>
               </div>
@@ -88,7 +107,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                 </>
               ) : (
                 <>
-                  <span>Оплатить</span>
+                  <span>Оплатить через {paymentNetwork.toUpperCase()}</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
