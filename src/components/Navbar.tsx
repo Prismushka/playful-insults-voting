@@ -8,6 +8,11 @@ const Navbar: React.FC = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
+            <img 
+              src="https://source.unsplash.com/photo-1501286353178-1ec881214838?w=48&h=48" 
+              alt="Trollface" 
+              className="w-8 h-8 rounded-full object-cover"
+            />
             <span className="text-xl font-bold text-primary animate-fade-in">ПрикольныеРугательства</span>
           </Link>
           
@@ -23,12 +28,6 @@ const Navbar: React.FC = () => {
               className="px-4 py-2 rounded-full text-sm font-medium hover:bg-secondary transition-all duration-200 ease-in-out"
             >
               Топ
-            </Link>
-            <Link 
-              to="/" 
-              className="ml-2 px-4 py-2 rounded-full bg-primary text-white text-sm font-medium hover:opacity-90 transition-all duration-200 ease-in-out shadow-sm"
-            >
-              Создать
             </Link>
           </div>
         </div>

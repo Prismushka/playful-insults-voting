@@ -69,7 +69,7 @@ const CascadingInsults: React.FC<CascadingInsultsProps> = ({ insults }) => {
             </div>
           )}
 
-          {/* Third place - right - made the same height as second place */}
+          {/* Third place - right */}
           {topThreeInsults.length >= 3 && (
             <div className="absolute bottom-0 right-0 lg:right-[calc(50%-260px)] w-full max-w-[250px] z-10 transform transition-all duration-300 hover:scale-[1.03]">
               <div className="relative">
