@@ -100,7 +100,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose }) => 
           ) : (
             <div className="space-y-3">
               <Button 
-                className="w-full flex justify-between items-center bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800" 
+                className="w-full flex justify-between items-center bg-gradient-to-r from-purple-800 to-purple-900 hover:from-purple-700 hover:to-purple-800 text-white" 
                 onClick={handleConnectPhantom}
                 disabled={isConnecting}
               >
@@ -112,7 +112,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose }) => 
               </Button>
               
               <Button 
-                className="w-full flex justify-between items-center bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700" 
+                className="w-full flex justify-between items-center bg-gradient-to-r from-orange-700 to-amber-800 hover:from-orange-600 hover:to-amber-700 text-white" 
                 onClick={handleConnectMetamask}
                 disabled={isConnecting}
               >

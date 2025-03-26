@@ -161,12 +161,11 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                 <select 
                   value={selectedNetwork} 
                   onChange={e => setSelectedNetwork(e.target.value as NetworkType)} 
-                  className="p-1.5 text-sm rounded border border-slate-500 bg-slate-600 text-slate-100 font-medium"
-                  style={{ color: 'black' }}
+                  className="p-1.5 text-sm rounded border border-slate-500 bg-slate-600 text-white font-medium"
                 >
-                  <option value="solana" style={{ color: 'black', backgroundColor: '#f5f5f5' }}>Solana</option>
-                  <option value="polygon" style={{ color: 'black', backgroundColor: '#f5f5f5' }}>Polygon</option>
-                  <option value="bsc" style={{ color: 'black', backgroundColor: '#f5f5f5' }}>BNB Smart Chain</option>
+                  <option value="solana" style={{ color: 'white', backgroundColor: '#1e293b' }}>Solana</option>
+                  <option value="polygon" style={{ color: 'white', backgroundColor: '#1e293b' }}>Polygon</option>
+                  <option value="bsc" style={{ color: 'white', backgroundColor: '#1e293b' }}>BNB Smart Chain</option>
                 </select>
               </div>
             </div>
