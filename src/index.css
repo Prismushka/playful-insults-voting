@@ -117,3 +117,42 @@
 .vote-animation:active {
   transform: scale(0.95);
 }
+
+/* Medal classes for top insults */
+.gold-medal .glassmorphism {
+  @apply border-yellow-400/50 bg-yellow-50/70 shadow-md;
+}
+
+.silver-medal .glassmorphism {
+  @apply border-gray-300/50 bg-gray-50/70 shadow-md;
+}
+
+.bronze-medal .glassmorphism {
+  @apply border-amber-600/30 bg-amber-50/70 shadow-md;
+}
+
+/* Top insults list styles */
+.insult-list-item {
+  @apply transition-all duration-300;
+}
+
+.insult-list-item .glassmorphism {
+  @apply hover:shadow-md;
+}
+
+/* Adding pagination styles */
+.pagination-nav {
+  @apply flex justify-center mt-8;
+}
+
+.pagination-list {
+  @apply flex space-x-1;
+}
+
+.pagination-item {
+  @apply px-3 py-1 rounded-md hover:bg-secondary transition-colors;
+}
+
+.pagination-active {
+  @apply bg-primary text-white;
+}

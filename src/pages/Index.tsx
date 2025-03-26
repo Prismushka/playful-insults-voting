@@ -1,19 +1,24 @@
+
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import CascadingInsults from '../components/CascadingInsults';
 import CreateInsultForm from '../components/CreateInsultForm';
 import { useInsultStore } from '../utils/data';
 import { ChevronDown, TrendingUp, Plus, RefreshCw } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
 const Index = () => {
   const [activeTab, setActiveTab] = useState<'top' | 'create'>('top');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const insults = useInsultStore(state => state.getTopInsults(50));
+  
   const handleRefresh = () => {
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
     }, 600);
   };
+  
   return <div className="min-h-screen bg-background">
       <Navbar />
       
@@ -41,18 +46,24 @@ const Index = () => {
                   <TrendingUp className="w-5 h-5 mr-2 text-primary" />
                   Топ ругательств
                 </h2>
-                <button onClick={handleRefresh} className="flex items-center p-2 rounded-full hover:bg-secondary transition-all duration-200">
-                  <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-                </button>
+                <div className="flex items-center space-x-2">
+                  <Link to="/top" className="text-sm text-primary hover:underline flex items-center">
+                    Смотреть все
+                    <ChevronDown className="w-4 h-4 ml-1 transform rotate-270" />
+                  </Link>
+                  <button onClick={handleRefresh} className="flex items-center p-2 rounded-full hover:bg-secondary transition-all duration-200">
+                    <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                  </button>
+                </div>
               </div>
               
               <CascadingInsults insults={insults} />
               
               {insults.length > 10 && <div className="text-center mt-8">
-                  <button className="flex items-center mx-auto px-4 py-2 text-muted-foreground hover:text-foreground transition-colors text-sm">
-                    <span>Загрузить еще</span>
+                  <Link to="/top" className="flex items-center justify-center mx-auto px-4 py-2 text-primary hover:underline transition-colors text-sm">
+                    <span>Смотреть все</span>
                     <ChevronDown className="w-4 h-4 ml-1" />
-                  </button>
+                  </Link>
                 </div>}
             </div>}
 
@@ -79,4 +90,5 @@ const Index = () => {
       </footer>
     </div>;
 };
+
 export default Index;
