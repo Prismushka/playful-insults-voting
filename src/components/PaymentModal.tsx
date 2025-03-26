@@ -1,29 +1,24 @@
-
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { DollarSign, Check, ArrowRight, Loader2, Wallet, Clock } from 'lucide-react';
 import { Insult } from '../utils/data';
 import { toast } from 'sonner';
 import { useWalletStore } from '../utils/wallet';
-
 interface PaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
   onPaymentComplete: () => void;
   insult: Insult;
 }
-
 type NetworkType = 'solana' | 'polygon' | 'bsc';
-
 interface NetworkFee {
   network: NetworkType;
   fee: number;
   totalAmount: number;
 }
-
-export const PaymentModal: React.FC<PaymentModalProps> = ({ 
-  isOpen, 
-  onClose, 
+export const PaymentModal: React.FC<PaymentModalProps> = ({
+  isOpen,
+  onClose,
   onPaymentComplete,
   insult
 }) => {
@@ -34,60 +29,58 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   const [timeRemaining, setTimeRemaining] = useState(60);
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationAttempts, setVerificationAttempts] = useState(0);
-  const { walletAddress: userWalletAddress, walletType } = useWalletStore();
-  
+  const {
+    walletAddress: userWalletAddress,
+    walletType
+  } = useWalletStore();
   useEffect(() => {
     const calculateFees = () => {
-      const solanaFee = 0.00001 + (Math.random() * 0.0001);
-      const polygonFee = 0.02 + (Math.random() * 0.05);
-      const bscFee = 0.005 + (Math.random() * 0.01);
-      
-      setNetworkFees([
-        { network: 'solana', fee: solanaFee, totalAmount: 1 + solanaFee },
-        { network: 'polygon', fee: polygonFee, totalAmount: 1 + polygonFee },
-        { network: 'bsc', fee: bscFee, totalAmount: 1 + bscFee }
-      ]);
-      
+      const solanaFee = 0.00001 + Math.random() * 0.0001;
+      const polygonFee = 0.02 + Math.random() * 0.05;
+      const bscFee = 0.005 + Math.random() * 0.01;
+      setNetworkFees([{
+        network: 'solana',
+        fee: solanaFee,
+        totalAmount: 1 + solanaFee
+      }, {
+        network: 'polygon',
+        fee: polygonFee,
+        totalAmount: 1 + polygonFee
+      }, {
+        network: 'bsc',
+        fee: bscFee,
+        totalAmount: 1 + bscFee
+      }]);
       setTimeRemaining(60);
     };
-    
     calculateFees();
-    
     const intervalId = setInterval(calculateFees, 60000);
-    
     const timerId = setInterval(() => {
       setTimeRemaining(prev => Math.max(0, prev - 1));
     }, 1000);
-    
     return () => {
       clearInterval(intervalId);
       clearInterval(timerId);
     };
   }, []);
-  
   const getSelectedNetworkFee = () => {
     return networkFees.find(fee => fee.network === selectedNetwork);
   };
-  
   const handlePayment = () => {
     if (!userWalletAddress) {
       toast.error("Пожалуйста, подключите кошелек");
       return;
     }
-    
     setIsProcessing(true);
-    
     setTimeout(() => {
       setIsProcessing(false);
       setIsVerifying(true);
       verifyPayment();
     }, 1500);
   };
-  
   const verifyPayment = () => {
     setTimeout(() => {
       const successProbability = Math.random();
-      
       if (successProbability > 0.3 || verificationAttempts >= 59) {
         setIsVerifying(false);
         onPaymentComplete();
@@ -95,7 +88,6 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
       } else {
         const newAttempts = verificationAttempts + 1;
         setVerificationAttempts(newAttempts);
-        
         if (newAttempts < 60) {
           verifyPayment();
         } else {
@@ -105,7 +97,6 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
       }
     }, 5000);
   };
-  
   const getNetworkIcon = (network: NetworkType) => {
     switch (network) {
       case 'solana':
@@ -118,10 +109,8 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
         return <Wallet className="w-5 h-5 mr-2" />;
     }
   };
-
-  return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-lg glassmorphism animate-scale-in">
+  return <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
+      <DialogContent className="sm:max-w-lg glassmorphism animate-scale-in bg-slate-600">
         <DialogHeader>
           <DialogTitle className="text-center text-xl font-bold text-primary-foreground">
             Проголосовать за ругательство
@@ -159,11 +148,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                 <span className="font-medium text-primary-foreground">Сеть</span>
               </div>
               <div className="flex items-center gap-2">
-                <select 
-                  value={selectedNetwork}
-                  onChange={(e) => setSelectedNetwork(e.target.value as NetworkType)}
-                  className="p-1.5 text-sm rounded border border-input bg-background text-primary-foreground font-medium"
-                >
+                <select value={selectedNetwork} onChange={e => setSelectedNetwork(e.target.value as NetworkType)} className="p-1.5 text-sm rounded border border-input bg-background text-primary-foreground font-medium">
                   <option value="solana">Solana</option>
                   <option value="polygon">Polygon</option>
                   <option value="bsc">BNB Smart Chain</option>
@@ -203,48 +188,31 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
           </div>
           
           <div className="mt-6 flex gap-4">
-            <button
-              onClick={onClose}
-              className="flex-1 py-2 px-4 border border-input rounded-lg text-sm font-medium hover:bg-secondary/80 transition-colors text-primary-foreground"
-              disabled={isProcessing || isVerifying}
-            >
+            <button onClick={onClose} className="flex-1 py-2 px-4 border border-input rounded-lg text-sm font-medium hover:bg-secondary/80 transition-colors text-primary-foreground" disabled={isProcessing || isVerifying}>
               Отмена
             </button>
             
-            <button
-              onClick={handlePayment}
-              disabled={isProcessing || isVerifying || !userWalletAddress}
-              className="flex-1 py-2 px-4 bg-gradient-to-r from-primary to-primary/80 text-white rounded-lg text-sm font-medium flex items-center justify-center space-x-2 hover:from-primary/90 hover:to-primary/70 transition-colors disabled:opacity-70"
-            >
-              {isProcessing ? (
-                <>
+            <button onClick={handlePayment} disabled={isProcessing || isVerifying || !userWalletAddress} className="flex-1 py-2 px-4 bg-gradient-to-r from-primary to-primary/80 text-white rounded-lg text-sm font-medium flex items-center justify-center space-x-2 hover:from-primary/90 hover:to-primary/70 transition-colors disabled:opacity-70">
+              {isProcessing ? <>
                   <Loader2 className="w-4 h-4 animate-spin" />
                   <span>Обработка...</span>
-                </>
-              ) : isVerifying ? (
-                <>
+                </> : isVerifying ? <>
                   <Loader2 className="w-4 h-4 animate-spin" />
                   <span>Проверка оплаты...</span>
-                </>
-              ) : (
-                <>
+                </> : <>
                   <div className="flex items-center">
                     {getNetworkIcon(selectedNetwork)}
                     <span>Оплатить через {selectedNetwork === 'solana' ? 'Solana' : selectedNetwork === 'polygon' ? 'Polygon' : 'BSC'}</span>
                   </div>
                   <ArrowRight className="w-4 h-4" />
-                </>
-              )}
+                </>}
             </button>
           </div>
           
-          {!userWalletAddress && (
-            <p className="mt-4 text-xs text-center text-amber-600 font-medium">
+          {!userWalletAddress && <p className="mt-4 text-xs text-center text-amber-600 font-medium">
               Для оплаты необходимо подключить криптовалютный кошелек
-            </p>
-          )}
+            </p>}
         </div>
       </DialogContent>
-    </Dialog>
-  );
+    </Dialog>;
 };
