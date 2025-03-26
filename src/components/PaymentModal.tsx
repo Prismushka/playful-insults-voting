@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { DollarSign, Check, ArrowRight, Loader2, Wallet, Clock } from 'lucide-react';
@@ -120,10 +121,12 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-md glassmorphism animate-scale-in">
+      <DialogContent className="sm:max-w-lg glassmorphism animate-scale-in">
         <DialogHeader>
-          <DialogTitle className="text-center">Проголосовать за ругательство</DialogTitle>
-          <DialogDescription className="text-center">
+          <DialogTitle className="text-center text-xl font-bold text-primary-foreground">
+            Проголосовать за ругательство
+          </DialogTitle>
+          <DialogDescription className="text-center text-primary-foreground/80">
             Каждый голос стоит $1 и будет переведен на указанный кошелек
           </DialogDescription>
         </DialogHeader>
@@ -138,28 +141,28 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
           
           <div className="mb-6 p-4 bg-secondary/50 rounded-lg border border-border">
             <p className="text-sm font-medium mb-2">Ругательство:</p>
-            <p className="italic">"{insult.text}"</p>
+            <p className="italic text-primary-foreground">{insult.text}</p>
           </div>
           
           <div className="space-y-4">
-            <div className="flex justify-between items-center p-3 border border-border rounded-lg">
+            <div className="flex justify-between items-center p-3 bg-secondary/30 border border-border rounded-lg">
               <div className="flex items-center">
                 <DollarSign className="w-5 h-5 text-primary mr-2" />
-                <span className="font-medium">Сумма голоса</span>
+                <span className="font-medium text-primary-foreground">Сумма голоса</span>
               </div>
-              <span className="font-bold">$1.00</span>
+              <span className="font-bold text-primary-foreground">$1.00</span>
             </div>
             
-            <div className="flex justify-between items-center p-3 border border-border rounded-lg">
+            <div className="flex justify-between items-center p-3 bg-secondary/30 border border-border rounded-lg">
               <div className="flex items-center">
                 <Wallet className="w-5 h-5 text-primary mr-2" />
-                <span className="font-medium">Сеть</span>
+                <span className="font-medium text-primary-foreground">Сеть</span>
               </div>
               <div className="flex items-center gap-2">
                 <select 
                   value={selectedNetwork}
                   onChange={(e) => setSelectedNetwork(e.target.value as NetworkType)}
-                  className="p-1.5 text-sm rounded border border-input bg-background"
+                  className="p-1.5 text-sm rounded border border-input bg-background text-primary-foreground font-medium"
                 >
                   <option value="solana">Solana</option>
                   <option value="polygon">Polygon</option>
@@ -168,33 +171,33 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               </div>
             </div>
             
-            <div className="flex justify-between items-center p-3 border border-border rounded-lg">
+            <div className="flex justify-between items-center p-3 bg-secondary/30 border border-border rounded-lg">
               <div className="flex items-center">
                 <Wallet className="w-5 h-5 text-primary mr-2" />
-                <span className="font-medium">Сетевая комиссия</span>
+                <span className="font-medium text-primary-foreground">Сетевая комиссия</span>
               </div>
-              <span className="font-mono">
+              <span className="font-mono text-primary-foreground">
                 ${getSelectedNetworkFee()?.fee.toFixed(5) || '0.00000'}
               </span>
             </div>
             
-            <div className="flex justify-between items-center p-3 border border-border rounded-lg bg-secondary/30 font-medium">
+            <div className="flex justify-between items-center p-3 border border-primary/30 rounded-lg bg-primary/10 font-medium">
               <div className="flex items-center">
                 <Check className="w-5 h-5 text-green-500 mr-2" />
-                <span>Итого к оплате</span>
+                <span className="text-primary-foreground">Итого к оплате</span>
               </div>
-              <span className="font-mono">
+              <span className="font-mono text-primary-foreground">
                 ${getSelectedNetworkFee()?.totalAmount.toFixed(5) || '1.00000'}
               </span>
             </div>
             
-            <div className="flex justify-between items-center p-3 border border-border rounded-lg">
+            <div className="flex justify-between items-center p-3 bg-secondary/30 border border-border rounded-lg">
               <div className="flex items-center">
                 <Check className="w-5 h-5 text-green-500 mr-2" />
-                <span className="font-medium">Кошелек получателя</span>
+                <span className="font-medium text-primary-foreground">Кошелек получателя</span>
               </div>
               <div className="flex items-center">
-                <span className="text-sm font-mono truncate max-w-[150px]">{walletAddress}</span>
+                <span className="text-sm font-mono truncate max-w-[150px] text-primary-foreground">{walletAddress}</span>
               </div>
             </div>
           </div>
@@ -202,7 +205,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
           <div className="mt-6 flex gap-4">
             <button
               onClick={onClose}
-              className="flex-1 py-2 px-4 border border-input rounded-lg text-sm font-medium hover:bg-secondary/80 transition-colors"
+              className="flex-1 py-2 px-4 border border-input rounded-lg text-sm font-medium hover:bg-secondary/80 transition-colors text-primary-foreground"
               disabled={isProcessing || isVerifying}
             >
               Отмена
@@ -211,7 +214,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
             <button
               onClick={handlePayment}
               disabled={isProcessing || isVerifying || !userWalletAddress}
-              className="flex-1 py-2 px-4 bg-primary text-white rounded-lg text-sm font-medium flex items-center justify-center space-x-2 hover:bg-primary/90 transition-colors disabled:opacity-70"
+              className="flex-1 py-2 px-4 bg-gradient-to-r from-primary to-primary/80 text-white rounded-lg text-sm font-medium flex items-center justify-center space-x-2 hover:from-primary/90 hover:to-primary/70 transition-colors disabled:opacity-70"
             >
               {isProcessing ? (
                 <>
@@ -236,7 +239,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
           </div>
           
           {!userWalletAddress && (
-            <p className="mt-4 text-xs text-center text-amber-600">
+            <p className="mt-4 text-xs text-center text-amber-600 font-medium">
               Для оплаты необходимо подключить криптовалютный кошелек
             </p>
           )}

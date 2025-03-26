@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from "@/components/ui/button";
 import { toast } from 'sonner';
 import { useWalletStore } from '../utils/wallet';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Wallet } from 'lucide-react';
 
 interface WalletModalProps {
   isOpen: boolean;
@@ -71,8 +71,10 @@ export const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose }) => 
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-md glassmorphism animate-scale-in">
         <DialogHeader>
-          <DialogTitle className="text-center">{walletAddress ? "Управление кошельком" : "Подключить кошелек"}</DialogTitle>
-          <DialogDescription className="text-center">
+          <DialogTitle className="text-center text-xl font-bold text-primary-foreground">
+            {walletAddress ? "Управление кошельком" : "Подключить кошелек"}
+          </DialogTitle>
+          <DialogDescription className="text-center text-primary-foreground/80">
             {walletAddress 
               ? "Ваш кошелек успешно подключен" 
               : "Выберите криптовалютный кошелек для подключения"}
@@ -98,23 +100,27 @@ export const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose }) => 
           ) : (
             <div className="space-y-3">
               <Button 
-                className="w-full flex justify-between items-center" 
+                className="w-full flex justify-between items-center bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800" 
                 onClick={handleConnectPhantom}
                 disabled={isConnecting}
               >
-                {isConnecting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                <span>Phantom</span>
-                <span className="text-xs bg-primary/20 px-2 py-1 rounded-full">Solana</span>
+                <div className="flex items-center">
+                  <img src="https://cryptologos.cc/logos/solana-sol-logo.png" className="w-5 h-5 mr-2" alt="Phantom" />
+                  <span>Phantom</span>
+                </div>
+                {isConnecting ? <Loader2 className="h-4 w-4 animate-spin" /> : <span className="text-xs bg-primary/20 px-2 py-1 rounded-full">Solana</span>}
               </Button>
               
               <Button 
-                className="w-full flex justify-between items-center" 
+                className="w-full flex justify-between items-center bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700" 
                 onClick={handleConnectMetamask}
                 disabled={isConnecting}
               >
-                {isConnecting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                <span>MetaMask</span>
-                <span className="text-xs bg-primary/20 px-2 py-1 rounded-full">EVM</span>
+                <div className="flex items-center">
+                  <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" className="w-5 h-5 mr-2" alt="MetaMask" />
+                  <span>MetaMask</span>
+                </div>
+                {isConnecting ? <Loader2 className="h-4 w-4 animate-spin" /> : <span className="text-xs bg-primary/20 px-2 py-1 rounded-full">EVM</span>}
               </Button>
               
               <p className="text-xs text-muted-foreground text-center mt-4">
