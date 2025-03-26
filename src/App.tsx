@@ -8,8 +8,10 @@ import Index from "./pages/Index";
 import TopInsults from "./pages/TopInsults";
 import NotFound from "./pages/NotFound";
 
-// For managing local zustand store
+// Local zustand stores
 import { create } from 'zustand';
+import { useInsultStore } from './utils/data';
+import { useWalletStore } from './utils/wallet';
 
 const queryClient = new QueryClient();
 

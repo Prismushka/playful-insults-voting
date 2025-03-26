@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
@@ -73,6 +72,12 @@ const TopInsults = () => {
   const totalPages = Math.ceil(filteredInsults.length / ITEMS_PER_PAGE);
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
   const displayedInsults = filteredInsults.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  
+  // Get rank for an insult based on votes (for medal display)
+  const getInsultRank = (insult: Insult) => {
+    const sortedByVotes = [...allInsults].sort((a, b) => b.votes - a.votes);
+    return sortedByVotes.findIndex(i => i.id === insult.id) + 1;
+  };
   
   const handleRefresh = () => {
     setIsRefreshing(true);
@@ -179,18 +184,6 @@ const TopInsults = () => {
     return items;
   };
   
-  // Set medal colors for top 3 insultas based on their rank in the overall list
-  const getMedalClassForInsult = (insult: Insult) => {
-    const rankInAll = allInsults
-      .sort((a, b) => b.votes - a.votes)
-      .findIndex(i => i.id === insult.id);
-      
-    if (rankInAll === 0) return "gold-medal";
-    if (rankInAll === 1) return "silver-medal";
-    if (rankInAll === 2) return "bronze-medal";
-    return "";
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -311,17 +304,23 @@ const TopInsults = () => {
               )}
             </div>
             
-            {/* Insults list */}
+            {/* Insults list - add rank prop */}
             <div className="space-y-4">
               {displayedInsults.length > 0 ? (
-                displayedInsults.map((insult) => (
-                  <div 
-                    key={insult.id} 
-                    className={`insult-list-item ${getMedalClassForInsult(insult)}`}
-                  >
-                    <InsultCard insult={insult} />
-                  </div>
-                ))
+                displayedInsults.map((insult) => {
+                  const rank = getInsultRank(insult);
+                  return (
+                    <div 
+                      key={insult.id} 
+                      className={`insult-list-item ${rank <= 3 ? `${rank === 1 ? 'gold-medal' : rank === 2 ? 'silver-medal' : 'bronze-medal'}` : ''}`}
+                    >
+                      <InsultCard 
+                        insult={insult} 
+                        rank={rank <= 3 ? rank : undefined} 
+                      />
+                    </div>
+                  );
+                })
               ) : (
                 <div className="text-center py-8">
                   <p className="text-muted-foreground">

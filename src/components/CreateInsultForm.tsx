@@ -1,6 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useInsultStore } from '../utils/data';
+import { useWalletStore } from '../utils/wallet';
 import { Loader2 } from 'lucide-react';
 
 const CreateInsultForm: React.FC = () => {
@@ -8,6 +9,17 @@ const CreateInsultForm: React.FC = () => {
   const [author, setAuthor] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const addInsult = useInsultStore((state) => state.addInsult);
+  const { walletType, getWalletUsername } = useWalletStore();
+  
+  // Set author based on wallet type
+  useEffect(() => {
+    const walletUsername = getWalletUsername();
+    if (walletType === 'phantom' && walletUsername) {
+      setAuthor(walletUsername);
+    } else if (walletType === 'metamask') {
+      setAuthor('');
+    }
+  }, [walletType, getWalletUsername]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,9 +28,12 @@ const CreateInsultForm: React.FC = () => {
     
     setIsSubmitting(true);
     
+    // Use author if provided, otherwise use wallet username or 'Аноним'
+    const finalAuthor = author.trim() || (walletType === 'phantom' ? getWalletUsername() : 'Аноним');
+    
     // Simulate a slight delay for better UX
     setTimeout(() => {
-      addInsult(text, author);
+      addInsult(text, finalAuthor);
       setText('');
       setAuthor('');
       setIsSubmitting(false);
@@ -47,14 +62,14 @@ const CreateInsultForm: React.FC = () => {
         
         <div>
           <label htmlFor="author" className="block text-sm font-medium mb-1">
-            Ваше имя (необязательно)
+            Ваше имя {walletType === 'phantom' ? '(автозаполнено из кошелька)' : '(необязательно)'}
           </label>
           <input
             id="author"
             type="text"
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
-            placeholder="Аноним"
+            placeholder={walletType === 'phantom' ? getWalletUsername() : 'Аноним'}
             className="w-full p-3 rounded-lg border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
           />
         </div>
