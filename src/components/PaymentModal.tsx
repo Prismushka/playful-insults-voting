@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { DollarSign, Check, ArrowRight, Loader2, Wallet, Bitcoin, Ethereum, Clock } from 'lucide-react';
+import { DollarSign, Check, ArrowRight, Loader2, Wallet, Clock } from 'lucide-react';
 import { Insult } from '../utils/data';
 import { toast } from 'sonner';
 import { useWalletStore } from '../utils/wallet';
@@ -36,10 +35,8 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   const [verificationAttempts, setVerificationAttempts] = useState(0);
   const { walletAddress: userWalletAddress, walletType } = useWalletStore();
   
-  // Calculate fees every minute
   useEffect(() => {
     const calculateFees = () => {
-      // Simulate getting real-time network fees
       const solanaFee = 0.00001 + (Math.random() * 0.0001);
       const polygonFee = 0.02 + (Math.random() * 0.05);
       const bscFee = 0.005 + (Math.random() * 0.01);
@@ -50,17 +47,13 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
         { network: 'bsc', fee: bscFee, totalAmount: 1 + bscFee }
       ]);
       
-      // Reset timer
       setTimeRemaining(60);
     };
     
-    // Calculate initial fees
     calculateFees();
     
-    // Set up interval to recalculate fees
     const intervalId = setInterval(calculateFees, 60000);
     
-    // Timer countdown
     const timerId = setInterval(() => {
       setTimeRemaining(prev => Math.max(0, prev - 1));
     }, 1000);
@@ -71,7 +64,6 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
     };
   }, []);
   
-  // Get fee for selected network
   const getSelectedNetworkFee = () => {
     return networkFees.find(fee => fee.network === selectedNetwork);
   };
@@ -84,7 +76,6 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
     
     setIsProcessing(true);
     
-    // Simulate payment processing
     setTimeout(() => {
       setIsProcessing(false);
       setIsVerifying(true);
@@ -93,29 +84,25 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   };
   
   const verifyPayment = () => {
-    // Simulate verification attempt
     setTimeout(() => {
       const successProbability = Math.random();
       
       if (successProbability > 0.3 || verificationAttempts >= 59) {
-        // Payment successful
         setIsVerifying(false);
         onPaymentComplete();
         toast.success("Платеж успешно обработан! Ваш голос учтен.");
       } else {
-        // Payment still processing
         const newAttempts = verificationAttempts + 1;
         setVerificationAttempts(newAttempts);
         
-        if (newAttempts < 60) {  // 5 minutes = 60 attempts at 5 seconds each
-          verifyPayment();  // Try again
+        if (newAttempts < 60) {
+          verifyPayment();
         } else {
-          // Give up after 5 minutes
           setIsVerifying(false);
           toast.error("Не удалось подтвердить платеж в течение 5 минут.");
         }
       }
-    }, 5000);  // Check every 5 seconds
+    }, 5000);
   };
   
   const getNetworkIcon = (network: NetworkType) => {
