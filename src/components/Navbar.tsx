@@ -5,7 +5,7 @@ const Navbar: React.FC = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
-            <img alt="Trollface" src="https://lastfm.freetls.fastly.net/i/u/ar0/788b80aaee9747afc7bb13b3ffa62ed5.png" className="w-8 h-8 rounded-0 object-cover" />
+            <img alt="Trollface" src="https://static.goodgame.ru/files/pics/227213_f3Te.jpg" className="w-30 h-35 rounded-0 object-cover" />
             <span className="text-xl font-bold text-primary animate-fade-in">ПрикольныеРугательства</span>
           </Link>
           
